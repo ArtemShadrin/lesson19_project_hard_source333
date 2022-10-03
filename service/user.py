@@ -17,7 +17,7 @@ class UserService:
         return self.dao.create(user_d)
 
     def delete(self, uid):
-        self.dao.delete(uid)
+        return self.dao.delete(uid)
 
     def update(self, user_d):
         self.dao.update(user_d)

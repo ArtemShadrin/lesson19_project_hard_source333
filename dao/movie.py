@@ -36,19 +36,29 @@ class MovieDAO:
         return ent
 
     def delete(self, rid):
-        movie = self.get_one(rid)
-        self.session.delete(movie)
-        self.session.commit()
+        try:
+            movie = self.get_one(rid)
+            self.session.delete(movie)
+            self.session.commit()
+            return True
+        except Exception as e:
+            self.session.rollback()
+            return False
 
     def update(self, movie_d):
-        movie = self.get_one(movie_d.get("id"))
-        movie.title = movie_d.get("title")
-        movie.description = movie_d.get("description")
-        movie.trailer = movie_d.get("trailer")
-        movie.year = movie_d.get("year")
-        movie.rating = movie_d.get("rating")
-        movie.genre_id = movie_d.get("genre_id")
-        movie.director_id = movie_d.get("director_id")
+        try:
+            movie = self.get_one(movie_d.get("id"))
+            movie.title = movie_d.get("title")
+            movie.description = movie_d.get("description")
+            movie.trailer = movie_d.get("trailer")
+            movie.year = movie_d.get("year")
+            movie.rating = movie_d.get("rating")
+            movie.genre_id = movie_d.get("genre_id")
+            movie.director_id = movie_d.get("director_id")
 
-        self.session.add(movie)
-        self.session.commit()
+            self.session.add(movie)
+            self.session.commit()
+            return True
+        except Exception as e:
+            self.session.rollback()
+            return False

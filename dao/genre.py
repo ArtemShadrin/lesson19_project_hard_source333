@@ -18,13 +18,23 @@ class GenreDAO:
         return ent
 
     def delete(self, rid):
-        genre = self.get_one(rid)
-        self.session.delete(genre)
-        self.session.commit()
+        try:
+            genre = self.get_one(rid)
+            self.session.delete(genre)
+            self.session.commit()
+            return True
+        except Exception as e:
+            self.session.rollback()
+            return False
 
     def update(self, genre_d):
-        genre = self.get_one(genre_d.get("id"))
-        genre.name = genre_d.get("name")
+        try:
+            genre = self.get_one(genre_d.get("id"))
+            genre.name = genre_d.get("name")
 
-        self.session.add(genre)
-        self.session.commit()
+            self.session.add(genre)
+            self.session.commit()
+            return True
+        except Exception as e:
+            self.session.rollback()
+            return False

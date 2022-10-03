@@ -1,7 +1,7 @@
 from dao.model.director import Director
 
 
-class DirectorDAO:
+class GenreDAO:
     def __init__(self, session):
         self.session = session
 
@@ -18,13 +18,23 @@ class DirectorDAO:
         return ent
 
     def delete(self, rid):
-        director = self.get_one(rid)
-        self.session.delete(director)
-        self.session.commit()
+        try:
+            director = self.get_one(rid)
+            self.session.delete(director)
+            self.session.commit()
+            return True
+        except Exception as e:
+            self.session.rollback()
+            return False
 
     def update(self, director_d):
-        director = self.get_one(director_d.get("id"))
-        director.name = director_d.get("name")
+        try:
+            director = self.get_one(director_d.get("id"))
+            director.name = director_d.get("name")
 
-        self.session.add(director)
-        self.session.commit()
+            self.session.add(director)
+            self.session.commit()
+            return True
+        except Exception as e:
+            self.session.rollback()
+            return False

@@ -18,16 +18,26 @@ class UserDAO:
         return ent
 
     def delete(self, uid):
-        user = self.get_one(uid)
-        self.session.delete(user)
-        self.session.commit()
+        try:
+            user = self.get_one(uid)
+            self.session.delete(user)
+            self.session.commit()
+            return True
+        except Exception as e:
+            self.session.rollback()
+            return False
 
     def update(self, user_d):
-        user = self.get_one(user_d.get("id"))
-        user.name = user_d.get("name")
+        try:
+            user = self.get_one(user_d.get("id"))
+            user.name = user_d.get("name")
 
-        self.session.add(user)
-        self.session.commit()
+            self.session.add(user)
+            self.session.commit()
+            return True
+        except Exception as e:
+            self.session.rollback()
+            return False
 
     def get_by_username(self, username):
         try:

@@ -15,8 +15,7 @@ class GenreService:
         return self.dao.create(genre_d)
 
     def update(self, genre_d):
-        self.dao.update(genre_d)
-        return self.dao
+        return self.dao.update(genre_d)
 
     def delete(self, rid):
-        self.dao.delete(rid)
+        return self.dao.delete(rid)
